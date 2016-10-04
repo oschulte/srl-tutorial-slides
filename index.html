@@ -1,64 +1,84 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-
-	<head>
-		<title>Tutorial on Learning Bayesian Networks for Complex Relational Data</title>
-	</head>
-	<body>
-
-<h1>Tutorial on Learning Bayesian Networks for Complex Relational Data</h1>
-
-Presenters: <a href="http://www.cs.sfu.ca/~oschulte/">Oliver Schulte</a> and <a href="https://www.sfu.ca/computing/people/faculty/arthurkirkpatrick.html">Ted Kirkpatrick</a>
-<br> </br>
-
-Duration: 4 hours (including 30 min break) <br></br>
-
-Intended Audience: Researchers with a background in machine learning who wish to apply machine learning to relational data, by combining graphical probabilistic models with first-order logic. 
-
-<h2>Code and Datasets</h2>
-
-<ul style="list-style-type: circle;">
-	<li>Sample databases are available in various formats. IMDb movie data serve as the running example.
-	<ul style="list-style-type: circle;">
-		<li>SQL guest access from the <a href="https://relational.fit.cvut.cz/">CTU Prague Relational Learning Repository.</a></li>
-		<li><a href="http://www.cs.sfu.ca/~oschulte/databases/databases.html">Single Excel file (joined tables)</a></li>
-		<li>Various <a href="http://www.cs.sfu.ca/~oschulte/BayesBase/input-output.html">Relational/Logical Formats</a>
-		</li>
-	</ul>
-	</li>
-	<li>Sample Code is linked <a href="http://www.cs.sfu.ca/~oschulte/BayesBase/BayesBase.html">here.</a>
-	</li>
-</ul>
-
-<h2> Slides </h2>
-
-The supplementary slides provide further details but will not be discussed during the tutorial.
-
-<ol style="list-style-type: decimal;">
-	<li><a href="ch0-example-queries.pptx">Section 0: Introduction</a>
-	</li>
-	<li><a href="ch1-data.pptx">Section 1: Relational Data: Definition</a>
-	<ul style="list-style-type: circle;">
-		<li><a href="ch1-data-extra.pptx">Supplementary Material: Different Relational Data Formats, Visualizations</a>
-		</li>
-	</ul>
-	 </li>
-	<li><a href="ch2-fo-bayes-nets.pptx">Section 2: First-order Bayesian Networks</a>
-	</li>
-	<li><a href="ch3-par-learning.pptx">Section 3: Parameter Learning</a>
-	</li>
-	<li><a href="ch4-struc-learning.pptx">Section 4: Structure Learning</a>
-	</li>
-	<li><a href="ch5-rel-bayes-net-classifier.pptx">Section 5: Relational Classification and Dependency Networks</a>
-	</li>
-	<li><a href="ch6-anomaly.pptx">Section 6: Relational Outlier Detection and Exception Mining</a>
-	<ul style="list-style-type: circle;">
-		<li><a href="ch6-anomaly-supplement.pptx">Supplementary Material: Generating a data matrix for relational outlier detection</a>
-		</li>
-	</ul>
-	</li>
-</ol>
-
-
-	</body>
-</html>
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>https://guiliang.github.io/srl-tutorial-slides/</title><link rel="stylesheet" type="text/css" href="index_files/viewsource.css"></head><body contextmenu="actions" id="viewsource" class="highlight" style="-moz-tab-size: 4"><pre id="line1"><span></span><span title="Almost standards mode doctype. Expected “&lt;!DOCTYPE html&gt;”." class="error doctype">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</span><span>
+<span id="line2"></span></span><span>&lt;<span class="start-tag">html</span>&gt;</span><span>
+<span id="line3"></span>
+<span id="line4"></span>	</span><span>&lt;<span class="start-tag">head</span>&gt;</span><span>
+<span id="line5"></span>		</span><span>&lt;<span class="start-tag">title</span>&gt;</span><span>Tutorial on Learning Bayesian Networks for Complex Relational Data</span><span>&lt;/<span class="end-tag">title</span>&gt;</span><span>
+<span id="line6"></span>	</span><span>&lt;/<span class="end-tag">head</span>&gt;</span><span>
+<span id="line7"></span>	</span><span>&lt;<span class="start-tag">body</span>&gt;</span><span>
+<span id="line8"></span>
+<span id="line9"></span></span><span>&lt;<span class="start-tag">h1</span>&gt;</span><span>Tutorial on Learning Bayesian Networks for Complex Relational Data</span><span>&lt;/<span class="end-tag">h1</span>&gt;</span><span>
+<span id="line10"></span>
+<span id="line11"></span>Presenters: </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:http://www.cs.sfu.ca/%7Eoschulte/" class="attribute-value">http://www.cs.sfu.ca/~oschulte/</a>"&gt;</span><span>Oliver Schulte</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span> and </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://www.sfu.ca/computing/people/faculty/arthurkirkpatrick.html" class="attribute-value">https://www.sfu.ca/computing/people/faculty/arthurkirkpatrick.html</a>"&gt;</span><span>Ted Kirkpatrick</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line12"></span></span><span>&lt;<span class="start-tag">br</span>&gt;</span><span> </span><span title="End tag “br”." class="error">&lt;/<span class="end-tag">br</span>&gt;</span><span>
+<span id="line13"></span>
+<span id="line14"></span>Duration: 4 hours (including 30 min break) </span><span>&lt;<span class="start-tag">br</span>&gt;</span><span></span><span title="End tag “br”." class="error">&lt;/<span class="end-tag">br</span>&gt;</span><span>
+<span id="line15"></span>
+<span id="line16"></span>Intended Audience: Researchers with a 
+background in machine learning who wish to apply machine learning to 
+relational data, by combining graphical probabilistic models with 
+first-order logic. 
+<span id="line17"></span>
+<span id="line18"></span></span><span>&lt;<span class="start-tag">h2</span>&gt;</span><span>Code and Datasets</span><span>&lt;/<span class="end-tag">h2</span>&gt;</span><span>
+<span id="line19"></span>
+<span id="line20"></span></span><span>&lt;<span class="start-tag">ul</span> <span class="attribute-name">style</span>="<a class="attribute-value">list-style-type: circle;</a>"&gt;</span><span>
+<span id="line21"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span>Sample databases are available in various formats. IMDb movie data serve as the running example.
+<span id="line22"></span>	</span><span>&lt;<span class="start-tag">ul</span> <span class="attribute-name">style</span>="<a class="attribute-value">list-style-type: circle;</a>"&gt;</span><span>
+<span id="line23"></span>		</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span>SQL guest access from the </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://relational.fit.cvut.cz/" class="attribute-value">https://relational.fit.cvut.cz/</a>"&gt;</span><span>CTU Prague Relational Learning Repository.</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line24"></span>		</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:http://www.cs.sfu.ca/%7Eoschulte/databases/databases.html" class="attribute-value">http://www.cs.sfu.ca/~oschulte/databases/databases.html</a>"&gt;</span><span>Single Excel file (joined tables)</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line25"></span>		</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span>Various </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:http://www.cs.sfu.ca/%7Eoschulte/BayesBase/input-output.html" class="attribute-value">http://www.cs.sfu.ca/~oschulte/BayesBase/input-output.html</a>"&gt;</span><span>Relational/Logical Data Formats</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line26"></span>		</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line27"></span>	</span><span>&lt;/<span class="end-tag">ul</span>&gt;</span><span>
+<span id="line28"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line29"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span>System Code is linked </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:http://www.cs.sfu.ca/%7Eoschulte/BayesBase/BayesBase.html" class="attribute-value">http://www.cs.sfu.ca/~oschulte/BayesBase/BayesBase.html</a>"&gt;</span><span>here.</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line30"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line31"></span></span><span>&lt;/<span class="end-tag">ul</span>&gt;</span><span>
+<span id="line32"></span>
+<span id="line33"></span></span><span>&lt;<span class="start-tag">h2</span>&gt;</span><span> Sample Bayesian Networks </span><span>&lt;/<span class="end-tag">h2</span>&gt;</span><span>
+<span id="line34"></span>
+<span id="line35"></span>The Bayesian networks can be opened using the </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:http://aispace.org/bayes/" class="attribute-value">http://aispace.org/bayes/</a>"&gt;</span><span>AIspace tool.</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line36"></span>
+<span id="line37"></span></span><span>&lt;<span class="start-tag">ul</span> <span class="attribute-name">style</span>="<a class="attribute-value">list-style-type: decimal;</a>"&gt;</span><span>
+<span id="line38"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span>The </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/IMDb_1R.xml" class="attribute-value">IMDb_1R.xml</a>" &gt;</span><span>IMDb Bayesian network  </span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span> (with one relationship only, HasRated). </span><span title="End tag “br”." class="error">&lt;/<span class="end-tag">br</span>&gt;</span><span></span><span>&lt;<span class="start-tag">img</span> <span class="attribute-name">src</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/bn-screenshot.jpg" class="attribute-value">bn-screenshot.jpg</a>"&gt;</span><span></span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line39"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span>The </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/Mondial.xml" class="attribute-value">Mondial.xml</a>" &gt;</span><span>Mondial Bayesian network  </span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span> (with one relationship only, Borders). </span><span title="End tag “br”." class="error">&lt;/<span class="end-tag">br</span>&gt;</span><span></span><span>&lt;<span class="start-tag">img</span> <span class="attribute-name">src</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/mondial-screenshot.jpg" class="attribute-value">mondial-screenshot.jpg</a>"&gt;</span><span></span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line40"></span></span><span>&lt;/<span class="end-tag">ul</span>&gt;</span><span>
+<span id="line41"></span>
+<span id="line42"></span>
+<span id="line43"></span>
+<span id="line44"></span>
+<span id="line45"></span>
+<span id="line46"></span></span><span>&lt;<span class="start-tag">h2</span>&gt;</span><span> Slides </span><span>&lt;/<span class="end-tag">h2</span>&gt;</span><span>
+<span id="line47"></span>
+<span id="line48"></span>The supplementary slides provide further details but will not be discussed during the tutorial.
+<span id="line49"></span>
+<span id="line50"></span></span><span>&lt;<span class="start-tag">ol</span> <span class="attribute-name">style</span>="<a class="attribute-value">list-style-type: decimal;</a>"&gt;</span><span>
+<span id="line51"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch0-example-queries.pptx" class="attribute-value">ch0-example-queries.pptx</a>"&gt;</span><span>Section 0: Introduction</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line52"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line53"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch1-data.pptx" class="attribute-value">ch1-data.pptx</a>"&gt;</span><span>Section 1: Relational Data: Definition</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line54"></span>	</span><span>&lt;<span class="start-tag">ul</span> <span class="attribute-name">style</span>="<a class="attribute-value">list-style-type: circle;</a>"&gt;</span><span>
+<span id="line55"></span>		</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch1-data-extra.pptx" class="attribute-value">ch1-data-extra.pptx</a>"&gt;</span><span>Supplementary Material: Different Relational Data Formats, Visualizations</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line56"></span>		</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line57"></span>	</span><span>&lt;/<span class="end-tag">ul</span>&gt;</span><span>
+<span id="line58"></span>	 </span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line59"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch2-fo-bayes-nets.pptx" class="attribute-value">ch2-fo-bayes-nets.pptx</a>"&gt;</span><span>Section 2: First-order Bayesian Networks</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line60"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line61"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch3-par-learning.pptx" class="attribute-value">ch3-par-learning.pptx</a>"&gt;</span><span>Section 3: Parameter Learning</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line62"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line63"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch4-struc-learning.pptx" class="attribute-value">ch4-struc-learning.pptx</a>"&gt;</span><span>Section 4: Structure Learning</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line64"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line65"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch5-rel-bayes-net-classifier.pptx" class="attribute-value">ch5-rel-bayes-net-classifier.pptx</a>"&gt;</span><span>Section 5: Relational Classification and Dependency Networks</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line66"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line67"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch6-anomaly.pptx" class="attribute-value">ch6-anomaly.pptx</a>"&gt;</span><span>Section 6: Relational Outlier Detection and Exception Mining</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line68"></span>	</span><span>&lt;<span class="start-tag">ul</span> <span class="attribute-name">style</span>="<a class="attribute-value">list-style-type: circle;</a>"&gt;</span><span>
+<span id="line69"></span>		</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span></span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/ch6-anomaly-supplement.pptx" class="attribute-value">ch6-anomaly-supplement.pptx</a>"&gt;</span><span>Supplementary Material: Generating a data matrix for relational outlier detection</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span>
+<span id="line70"></span>		</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line71"></span>	</span><span>&lt;/<span class="end-tag">ul</span>&gt;</span><span>
+<span id="line72"></span>	</span><span>&lt;<span class="start-tag">li</span>&gt;</span><span> </span><span>&lt;<span class="start-tag">a</span> <span class="attribute-name">href</span>="<a href="view-source:https://guiliang.github.io/srl-tutorial-slides/definitions.pdf" class="attribute-value">definitions.pdf</a>"&gt;</span><span>Supplementary Material: Definitions.</span><span>&lt;/<span class="end-tag">a</span>&gt;</span><span> Concise summary of the mathematical content. No examples.
+<span id="line73"></span>	</span><span>&lt;/<span class="end-tag">li</span>&gt;</span><span>
+<span id="line74"></span></span><span>&lt;/<span class="end-tag">ol</span>&gt;</span><span>
+<span id="line75"></span>
+<span id="line76"></span>
+<span id="line77"></span>
+<span id="line78"></span>	</span><span>&lt;/<span class="end-tag">body</span>&gt;</span><span>
+<span id="line79"></span></span><span>&lt;/<span class="end-tag">html</span>&gt;</span><span></span></pre><menu id="actions" type="context"><menuitem accesskey="L" label="Go to Line…" id="goToLine"></menuitem><menuitem type="checkbox" label="Wrap Long Lines" id="wrapLongLines"></menuitem><menuitem checked="true" type="checkbox" label="Syntax Highlighting" id="highlightSyntax"></menuitem></menu></body></html>
