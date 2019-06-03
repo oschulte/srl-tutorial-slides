@@ -1,0 +1,545 @@
+\documentclass{article}
+\input{preamble-book}
+%\usepackage{proceed2e}
+%\usepackage{ltexpprt}
+% defines theorem environments etc.
+
+\begin{document}
+\title{Tutorial on Learning Bayesian Networks for Relational Data: Definitions}
+\author{Oliver Schulte and Ted Kirkpatrick\\
+\\ School of Computing Science\\ Simon Fraser University\\Vancouver-Burnaby, Canada}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+The mathematical concepts that the tutorial  introduces and illustrates.
+\end{abstract}
+
+\listoftodos
+
+\section{Introduction and General Notation}
+We summarize the mathematical content of our tutorial on learning Bayesian networks for multi-relational data. The definitions specify the log-linear models that we use for relational data. The note is complementary to the tutorial: while the tutorial uses a minimum of formal notation and a maximum of examples, the note has no examples, but provides a complete and precise set of definitions. As i.i.d. data are a special case of relational data, our aim is to generalize statistical concepts for i.i.d. data to relational data. Table~\ref{table:compare} provides a summary of the correspondences that this note defines formally. 
+
+\begin{table}[htp]
+\centering
+\caption{Statistical concepts for relational vs. i.i.d. data. With a single population and unary functors only, the relational concepts reduce to the i.i.d. concepts.}
+ \resizebox{\columnwidth}{!}{
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+& Representation & Population & Instances & Sample Size & Empirical Frequency \\ \hline
+I.i.d Data & Single Table & Single & Rows & Single $N$ & Sample Frequency \\ \hline
+Relational Data & Multiple Tables & Multiple & Groundings & Multiple $N$, one for each population & Database Frequency \\ \hline
+\end{tabular}
+}
+\label{table:compare}
+\end{table}% 
+
+
+We use boldface to denote sets and lists of objects; for instance, $\{\aconstant_{1},\aconstant_{2},\ldots, \aconstant_{n}\} \equiv \set{\aconstant}$. The notation $|S|$ denotes the cardinality of a set $S$. Fix a set of random variables $\set{\node} = \{\node_{1},\ldots,\node_{n}\}$. 
+%The possible values of $\node_{i}$ are enumerated as $\{\xvalue_{i1},\ldots,\xvalue_{i\states_{i}}\}$. 
+The notation $P(\node_{i} = \xvalue)\equiv P(\xvalue)$ denotes the probability of random variable $\node_{i}$ taking on value $\xvalue$. We also use the set notation $P(\set{\node} = \set{\xvalue}) \equiv P(\set{\xvalue})$ to denote the joint probability that each random variable $\node_{i}$ takes on value $\set{\xvalue}_{i}$. 
+
+
+\section{Possible Worlds}
+A \defterm{world} is a triple $\langle \individuals, \values, \functors\rangle$ where
+
+\begin{enumerate}
+\item $\individuals$ is a set of individuals,
+\item $\values$ is a set of values, including $\true,\false, \na$ and
+\item $\functors$ is a set of functions, called \defterm{functors}, that map one or more individuals to a value.
+\end{enumerate}
+
+For simplicity we consider worlds with a finite number of functors and values only, but that is not essential for the results presented. Individuals are denoted by lower case constants.
+A functor $$\functor: \individuals^{k} \rightarrow \values$$ with $k$ arguments has \defterm{arity} $k$. A functor that returns a Boolean value $\{\true,\false\}$ is called a \defterm{predicate}, usually written with uppercase letters like $\Ppredicate,\Rpredicate$. Other functors are usually writen with lowercase letters. 
+
+A \defterm{sample} from world $\langle \individuals, \values, \functors\rangle$ is a subworld $\dstructure = \langle \individuals' \subset \individuals, \values, \functors|\individuals'\rangle$ that specifies the values of functors for arguments drawn from a finite subset $\individuals'$ of individuals.
+
+\subsection{Possible Worlds}
+
+A \defterm{possible world} is a world where each functor belongs to exactly one of the following groups.
+
+\begin{description}
+\item[Classes] A set of unary predicates. 
+\item[Relationships] A set of predicates with arity $>1$.
+\item[Class Attributes] For each class, a set of functors associated with the class. A class attribute is defined only for instances of the class. Thus if $\functor$ is an attribute of $\class$, then $\functor(\aconstant) = \na$ whenever $\class(\aconstant) = \false$.
+\item[Relationship Attributes] For each relationship, a set of functors associated with the relationship. A relationship attribute is defined only for instances of the relationship. Thus if $\functor$ is an attribute of $\relationship$, then $\functor(\set{\aconstant}) = \na$ whenever $\relationship(\set{\aconstant}) = \false$.
+\end{description}
+
+
+
+In a possible world, each individual belongs to at least one class. The set of individuals that belong to a class is given by $\{\aconstant \in \individuals: \class(\aconstant)=\true \}$. 
+%If the possible world contains $m$ classes $\class_{1},\ldots,\class_{m}$, there are $m$ corresponding sets of individuals, which we denote as $\indclass_{1},\ldots,\indclass_{m}$. 
+The term class may refer both to the functor and to the associated set of indviduals. Relational functors are typed as well, meaning that each argument position is associated with a class. If any argument is from the wrong class, the functor returns $\na$. 
+
+
+\section{Relational Random Variables} 
+
+A relational random variable is a logical term with a probabilistic semantics. Terms in logic are analogues of random variables in probability theory because both are built out of functions: Applying a function to a set of terms produces another term. Likewise, applying a function to a set of random variables produces another random variable. 
+
+Formally, a term is (i) an individual constant, (ii) a population variable, or (iii) \defterm{a functional term} of the form $\fterm{\functor}{\term_{1},\ldots,\term_{k}}$ where the type of each term $\term_{i}$ matches the argument type of $\functor$. 
+A \defterm{relational random variable} (RRV) is a functional term. [maybe use "first-order variable" until we present a probabilistic interpretation]
+
+When discussing general statistical concepts, the special syntactic structure of an RRV is often not important. In such cases, we denote them 
+using the traditional random variable notation like $\Xvariable,\Yvariable$.\footnote{Unfortunately the tradition in statistics clashes with the equally strong tradition in logic of using $\Xvariable,\Yvariable$ to denote population variables.} 
+%
+A term/random variable is \defterm{ground} if it contains only constants; otherwise it is \defterm{first-order} (FORV). If we wish to emphasize that a RRV is ground, we indicate this using notation like $\FG{\Xvariable},\FG{\Yvariable}$.
+
+\subsection{Instantiations and Groundings}
+
+
+An \defterm{instantiation} $\replace{\Avariable}{\aconstant}$ replaces a population variable by an individual instance  from the same class, denoted by a constant. An instantiation for a set of population variables specifies an instance for each. Using boldface vector notation,
+$\replace{\set{\Avariable}}{\set{\aconstant}} = \{\replace{\Avariable_{1}}{\aconstant_{1}},\ldots,\replace{\Avariable_{k}}{\aconstant_{k}}\}$ 
+denotes an instantiation for a set of population variables.
+
+Applying an instantiation to a term/random variable replaces every occurrence of a population variable in the term/random variable by the instance specified. We write 
+$\instantiate
+	{\Xvariable}
+	{\replace{\set{\Avariable}}{\set{\aconstant}}}
+$ for applying the instantiation $\replace{\set{\Avariable}}{\set{\aconstant}}$ to $\Xvariable$. An instantiation may also be applied to a set of random variables. 
+%
+An instantiation may replace all, some, or none of the population variables in a list of random variables. If an instantiation replaces all population variables, it is a \defterm{grounding}. Since a grounding produces a ground object, we indicate this by adding a $\FG{}$ marker to the result of applying the grounding. For example, the notation $\ground{\set{\Xvariable}}{\replace{\set{\Avariable}}{\set{\aconstant}}}$ indicates that the grounding $\replace{\set{\Avariable}}{\set{\aconstant}}$ specifies a value for each population variable in the list of random variables $\set{\Xvariable}$. Without an $\FG{}$ marker, an instantiation may replace by constants any number of population variables, including none or all.
+
+
+
+
+
+\subsection{Logical Formulas and Joint Assignments}
+
+A probabilistic semantics assigns a probability to each logical formula. Logical formulas are built out of basic equations of the form $\term_{1} = \term_{2}$. These basic statements can be combined using the standard Boolean operations (and, or, not), and extended with quantifiers (for all, exists). The statistical analogue to adding quantifiers is extending the Boolean algebra over the basic events $\term_{1} = \term_{2}$ to a $\sigma$-algebra. We describe the random selection semantics for a restricted language that is sufficient to represent the queries that are usually modelled with Bayesian networks: Conjunctions of basic \defterm{assignments}. A basic assignment specifies a value for a random variable, and a conjunction of them represents a joint assignment. Using random variable notation, a joint assignment is written as $(\Xvariable_{1}=\xvalue_{1},\ldots,\Xvariable_{n} = \xvalue_{n}) \equiv \set{\Xvariable} = \set{\xvalue}$. The notation 
+
+$$\dprob{\structure}{\set{\Xvariable} = \set{\xvalue}}=p$$ denotes that in world $\structure$, the frequency of the joint assignment $\set{\Xvariable} = \set{\xvalue}$ is $p$. In Halpern's logical framework, this is equivalent to the statement 
+
+$$\structure \models P(\set{\Xvariable} = \set{\xvalue})=p$$ which can be read as ``in world $\structure$, the probability assertion $P(\set{\Xvariable} = \set{\xvalue})=p$ is true''. 
+We next describe Halpern's probabilistic semantics for relational random variables.
+
+\section{The Random Selection Semantics for First-Order Relational Random Variables}
+
+
+
+%\[
+%\dprob{\structure}{\Xvariable_{1}=\xvalue_{1},\ldots,\Xvariable_{n} = \xvalue_{n}} =
+%\begin{cases}
+%1 & \mbox{if $\structure$ assigns value $\xvalue_{i}$ to $\Xvariable_{i}$}\\
+%0 & \mbox{otherwise}
+%\end{cases}
+%\]
+
+%\subsubsection{Assignments to Population Variables and First-Order Terms}
+
+The key idea of the random selection semantics is to view a first-order variable $\Avariable$ as a random variable ranging over instances of the class associated with $\Avariable$. In the following we assume for a population variable a uniform distribution over its class. The random selection semantics treats different population variables as independent of each other, so their joint distribution is the product of the individual distributions.
+
+Given that population variables are random variables, first-order terms represent functions of random variables. A function  of random variables themselves represents a random variable, as usual in propability theory: The probability that function $\functor$ takes on value $y$ is the probability mass of all arguments $\set{x}$ such that $\functor(\set{x}) = y$. 
+
+For a ground term, an assignment $\FG{\Xvariable} = \xvalue$ of a value is either true or false in a possible world. We use an indicator function to represent this value, for each ground term assignment, and for each world. 
+%The probability for such an assignment in a given world is therefore the extreme values 0 and 1. 
+%
+%While this does not represent a frequency, it is technically convenient to include this case in the definition of $\dprob{\structure}{\cdot}$.
+These ideas lead to the following definitions.
+
+
+\begin{eqnarray}
+\dprob{\structure}{\Avariable = \aconstant} & \equiv & \frac{1}{|\varclass{\individuals}{\Avariable}|}\\
+\dprob{\structure}{\Avariable_{1} = \aconstant_{1},\ldots,\Avariable_{k}=\aconstant_{k}} & \equiv &\frac
+{1}
+{{|\varclass{\individuals}{\Avariable_{1}}| \times \cdots \times |\varclass{\individuals}{\Avariable_{k}}|}} \label{eq:uniform}
+\\
+\tvalue{\structure}{\FG{\set{\Xvariable}}= \set{\xvalue}} & \equiv &
+\begin{cases}
+1 & \mbox{if $\structure$ assigns value $\xvalue_{i}$ to each $\FG{\Xvariable_{i}}$}\\
+0 & \mbox{otherwise}
+\end{cases}\\
+%\dprob{\structure}{\set{\Xvariable} = \set{\xvalue}|\set{\Avariable} = \set{\aconstant}} & \equiv & 
+%\dprob{\structure}{\ground
+%{\set{\Xvariable}}
+%{\replace{\set{\Avariable}}{\set{\aconstant}}} = \set{\xvalue}} \label{eq:grounding}\\
+\label{eq:frequency}
+\dprob{\structure}{\set{\Xvariable} = \set{\xvalue}} & = & \sum_{\set{\aconstant}} \tvalue{\structure}{\ground
+{\set{\Xvariable}}
+{\replace{\set{\Avariable}}{\set{\aconstant}}} = \set{\xvalue}}  \times \dprob{\structure}{\set{\Avariable} = \set{\aconstant}}
+\end{eqnarray}
+
+
+
+%where in Equation~\eqref{eq:frequency} the index $\set{\aconstant}$ ranges over the set of groundings of the first-order random variables in $\set{\Xvariable}$. Equation~\eqref{eq:grounding} shows that we can view a grounding of first-order terms in two ways: in a logical view, it is a textual replacement of all first-order variables by constants. In a probabilistic view, it represents conditioning on the values of population variables. The next proposition shows that this equivalence holds for instantiations in general, even if they replace only some of the population variables.
+%
+%
+%\begin{proposition} \label{prop:condition=ground}For any possible world and instantiation $\replace{\set{\Avariable}}{\set{\aconstant}}$, conditioning = grounding: 
+%$$\dprob{\structure}{\set{\Xvariable} = \set{\xvalue}|\set{\Avariable} = \set{\aconstant}} = \dprob{\structure}{\instantiate
+%{\set{\Xvariable}}
+%{\replace{\set{\Avariable}}{\set{\aconstant}}} = \set{\xvalue}}.$$
+%\end{proposition}
+
+
+%First, given values for the population variables, the value of a first-order term is determined, corresponding to 0/1 distribution over its values. The probability of 
+
+
+%\subsection{Proportion Interpretation} 
+
+%The next proposition shows that 
+Given the uniform distribution over tuples of individuals (Equation~\eqref{eq:uniform}), 
+the joint probability $\dprob{\structure}{\cdot}$  of first-order random variables can be interpreted as a proportion, namely the number of groundings that match the joint assignment, divided by the total number of possible groundings. The \defterm{grounding count}   is given by 
+
+\begin{equation}
+\Count{\set{\Xvariable} = \set{\xvalue}}{\structure}
+\equiv 
+\sum_{\set{\aconstant}} \tvalue{\structure}{\ground
+{\set{\Xvariable}}
+{\replace{\set{\Avariable}}{\set{\aconstant}}} = \set{\xvalue}}
+\end{equation}
+where $\set{\aconstant}$ ranges over the set of groundings of the first-order random variables in $\set{\Xvariable}$.
+
+Therefore 
+
+\begin{equation} \label{eq:proportion}
+\dprob{\structure}{\set{\Xvariable} = \set{\xvalue}} 
+= \frac
+{\Count{\set{\Xvariable} = \set{\xvalue}}{\structure}}
+{{|\varclass{\individuals}{\Avariable_{1}}| \times \cdots \times |\varclass{\individuals}{\Avariable_{k}}|}}.
+\end{equation}
+
+That is, the relational frequency of a first-order formula is the number of groundings that satisfy the formula, divided by the number of possible groundings given the type constraints.
+%
+%Following proposition~\ref{prop:condition=ground}, we define the \defterm{conditional grounding count} of a joint assignment by 
+
+%\begin{equation}
+%\Count{\set{\Xvariable} = \set{\xvalue}}{\structure,\set{\Avariable} = \set{\aconstant}}
+%\equiv \Count{\instantiate
+%{\set{\Xvariable}}
+%{\replace{\set{\Avariable}}{\set{\aconstant}}} = \set{\xvalue}}{\structure}.
+%\end{equation}
+% 
+
+\begin{equation}
+\Count{\set{\Xvariable} = \set{\xvalue}|\set{\Avariable} = \set{\aconstant}}{\structure}
+\equiv \Count{\instantiate
+{\set{\Xvariable}}
+{\replace{\set{\Avariable}}{\set{\aconstant}}} = \set{\xvalue}}{\structure}.
+\end{equation}
+ 
+
+\subsection{Data Table Visualization}
+
+We can visualize the frequency distribution $\dprob{\structure}{\cdot}$ in terms of a \defterm{groundings table} as follows \cite{Riedel2013}. 
+A possible world $\structure$ assigns a value to each ground random variable $\FG{\Xvariable}$. Let $\ground{\set{\Xvariable}}{\replace{\set{\Avariable}}{\set{\aconstant}}}$ be a grounding  for $n$ relational random variables. Then 
+$
+\dvalues
+{\set{\xvalue}}
+{\replace{\set{\Avariable}}{\set{\aconstant}}}
+{\structure}
+$
+denotes an $n$-dimensional vector whose entries list one value for each of the $n$ ground random variables $\ground{\set{\Xvariable}}{\replace{\set{\Avariable}}{\set{\aconstant}}}$, as determined by $\structure$. 
+We can visualize the vectors $\dvalues
+{\set{\xvalue}}
+{\replace{\set{\Avariable}}{\set{\aconstant}}}
+{\structure}$ in a table with $n$ columns whose rows are indexed by the possible groundings $\set{\aconstant}$. This groundings table is the counterpart to a data table for  a set of random variables $\set{\Xvariable}$ in the case of i.i.d. data. Equation~\eqref{eq:proportion} entails that the frequency $\dprob{\structure}{\set{\Xvariable}= \set{\xvalue}}$ is the number of rows in the groundings table that match the joint assignment $\set{\Xvariable}= \set{\xvalue}$, divided by the total number of rows in the groundings table.
+
+
+%Let $\set{\Xvariable} = \set{\xvalue}$ be an assignment of values to a list of random variables, where at least one of the random variables is not ground. Then the \defterm{grounding count} of this assignment is the number of groundings whose associated vector of values agrees with the assignment:
+%
+%\[\Count{\set{\Xvariable} = \set{\xvalue}}{\structure}
+%\equiv
+%|\{\set{\aconstant}: \set{\xvalue} = \dvalues
+%{\set{\xvalue}}
+%{\replace{\set{\Avariable}}{\set{\aconstant}}}
+%{\structure}\}|
+%\]
+%where $\set{\aconstant}$ ranges over the possible groundings of the random variables $\set{\Xvariable}$. 
+
+
+
+
+\subsection{Ground Relational Random Variables}
+
+The random selection semantics cannot be used to define a distribution over the values of a ground term. Halpern's type 2 semantics instead requires the specification of a distribution $\probworlds$ over worlds. The probability 
+$\iprob{\fterm{\functor}{\set{\aconstant}}=\xvalue}$ is then the probability sum of all worlds that satisfy $\fterm{\functor}{\set{\aconstant}}=\xvalue$. 
+%When the special syntactic world of ground random variables is not important, we denote them using notation like $\FG{\Xvariable},\FG{\Yvariable}$. In particular, $\ground
+%{\Xvariable}
+%{\replace
+%	{\set{\Avariable}}
+%	{\set{\aconstant}}
+%}
+%$ is a ground random variable that results from grounding a first-order random variable.
+%
+
+While in principle, probabilities over first-order formulas need not be related to probabilities over completely ground formulas, the \defterm{Halpern instantiation principle} connects the two via the equation:
+
+\begin{equation} \label{eq:multiple-instantiate}
+\dprob{\structure}{\set{\Xvariable} = \set{\xvalue}} = 
+\iprob{
+	{\FG{\set{\Xvariable}}}
+	=
+	\set{\xvalue}
+}
+\end{equation}
+for any grounding $\FG{\set{\Xvariable}}$ of the random variables $\FG{\set{\Xvariable}}$. Halpern's original principle is restricted to a set of terms that contain a single population variable only. 
+%
+%where $\Avariable$ is the only population variable that occurs in $\formula$. 
+We use the more general version of the instantiation principle that extends it to formulas with multiple population variables (for discussion see \cite{Chiang2012}).
+
+
+
+%where $\set{\Avariable} = \{\Avariable_{1},\ldots,\Avariable_{k}\}$ are the population variables that occur in the formula
+%$\formula$.
+
+\section{Bayesian Networks for Relational Data}
+
+\subsection{Bayesian Networks}
+
+A {\bf Bayesian Network (BN)} is a directed acyclic graph (DAG) whose nodes comprise a set of random variables \cite{Pearl1988}. Depending on context, we interchangeably refer to the nodes  and (random) variables of a BN. 
+%
+The conditional probability parameters of a Bayesian network specify the distribution of a child node given an assignment of values to its parent node. For an assignment of values to its nodes, a BN defines the joint probability as the product of the conditional probability of the child node value given its parent values, for each child node in the network. This means that the log-joint probability can be {\em decomposed} as the node-wise sum
+
+\begin{equation} \label{eq:bn}
+\ln \bprob{P}{\BN}{\set{\node} = \set{\xvalue}} = \sum_{i=1}^{n} \ln 
+\cprob
+{P_{\BN}}
+{\node_{i} = \set{\xvalue}_{i}}
+{
+\Pa{\node_{i}} = \set{\xvalue}_{\Pa{\node_{i}}}
+}
+\end{equation}
+
+where $\set{\xvalue}_{i}$ resp. $\set{\xvalue}_{\Pa{\node_{i}}}$ is the assignment of values to node $\node_{i}$ resp. the parents of $\node_{i}$ determined by the assignment $\set{\xvalue}$. 
+%The function $\ln$ is the binary logarithm base 2. 
+To avoid difficulties with $\ln(0)$, here and below we assume that joint distributions are positive everywhere. The parameters of the Bayesian network are the conditional probabilities of child node values given assignments to parent nodes. A common compact notation for parameter values is the following abbreviation
+$$
+\parameter_{ijk} \equiv \cprob
+{P_{\BN}}
+{\node_{i} = \xvalue_{ik}}
+{
+\Pa{\node_{i}} = \pavalue_{j}
+}
+$$
+where $\xvalue_{ik}$ denotes the $k$-th possible value of node $\node_{i}$ and $\pavalue_{j}$ denotes the $j$-th possible state (value assignment) for the parents of $\node_{i}$. 
+%
+Since the parameter values for a Bayes net define a joint distribution over its nodes, they therefore entail a marginal, or unconditional, probability for a single node. We denote the \textbf{marginal probability} that node $\node_{i}$ has value $\xvalue_{ik}$ as 
+$$\parameter_{ik} \equiv \bprob{P}
+{\BN}
+{\node_{i} = \xvalue_{ik}}.
+$$
+
+\subsection{First-Order Bayesian Networks}
+
+A \defterm{First-Order Bayesian Network} (FOB) is a Bayesian network whose nodes are first-order terms. Via equation~\ref{eq:bn}, a FOB defines a distribution over first-order random variables. If a FOB is learned from a sample $\dstructure$ drawn from world $\structure$, we can view the FOB as an estimator of the relational class-level probability distribution $\dprob{\structure}{\cdot}$. 
+
+
+A FOB does not determine a unique probability distribution $\bprob{\FG{P}}{\BN}{\cdot}$ over {\em all} ground random variables, because a set of ground random variables may instantiate the same FOB multiple times. The Halpern instantiation principle~\eqref{eq:multiple-instantiate} for a FOB $\BN$ constrains the ground and first-order distributions to agree on single groundings:
+
+\begin{equation} \label{eq:halpern-bn}
+\bprob
+{\FG{P}}{\BN}{\FG{\set{\Xvariable}} = \set{\xvalue}} 
+= 
+\bprob
+{P}
+{\BN}
+{\set{\Xvariable}=\set{\xvalue}}
+\end{equation}
+
+for any grounding $\FG{\set{\Xvariable}}$ of the nodes in the FOB.
+%
+%
+%where $\set{\Avariable} = \{\Avariable_{1},\ldots,\Avariable_{k}\}$ are the population variables that occur in the BN first-order random variables $\set{\Xvariable}$.
+
+
+
+\section{The Random Selection Pseudo-Likelihood}
+
+For i.i.d. data, the likelihood function quantifies how well a Bayesian network fits the data. The random selection semantics suggests a pseudo-likelihood function that plays the same role for relational data. The term ``pseudo'' indicates that the likelihood function is not normalized, meaning that the sum of the pseudo-likelihoods of all possible worlds is not 1. 
+
+%According to the random selection semantics, the log-likelihood assigned by a FOB $\BN$ to a randomly selected grounding is given by the BN product equation~\eqref{eq:bn}. 
+The expected log-likelihood of a randomly selected grounding is given by the sum
+
+\begin{equation} \label{eq:random-pseudo}
+\dlog{\BN}{\dstructure} \equiv
+\frac
+{1}
+{{|\varclass{\individuals}{\Avariable_{1}}| \times \cdots \times |\varclass{\individuals}{\Avariable_{k}}|}}
+\sum_{\set{\aconstant}}
+\ln \bprob
+{P}{\BN}
+{\set{\Xvariable}
+%{\ground
+%	{\set{\Xvariable}}
+%	{\replace{\set{\Avariable}}{\set{\aconstant}}}
+=\dvalues
+{\set{\xvalue}}
+	{\replace{\set{\Avariable}}{\set{\aconstant}}}
+	{\dstructure}
+}
+\end{equation}
+
+
+where  the summation ranges over complete groundings of $\BN$. 
+%The expression 
+%$\dvalues
+%	{\FG{\set{\Xvariable}}}
+%	{\dstructure}$ denotes the set of values observed in the sample $\dstructure$ to the ground terms 
+%	${\FG{\set{\Xvariable}}}= 
+%	\ground
+%	{\set{\Xvariable}}
+%	{\replace{\set{\Avariable}}{\set{\aconstant}}}
+%	$.  
+
+By the instantiation principle~\eqref{eq:halpern-bn}, the joint probability 
+	$
+	\bprob
+{\FG{P}}
+{\BN}
+{\FG{\set{\Xvariable}}
+=
+\dvalues
+{\set{\xvalue}}
+{\replace{\set{\Avariable}}{\set{\aconstant}}}
+{\dstructure}}
+$ can be computed from class-level probabilities as shown in Equation~\eqref{eq:random-pseudo}. The sum ranges over an exponentially large domain of possible groundings. However, the next proposition provides a closed form that sums over the nodes in the FOB instead.
+The closed form can be expressed using the following notation.
+
+\begin{enumerate}
+\item Let $\familyf{i}{ijk}$ be the joint assignment that assigns to node $\Xvariable_{i}$ its $k$-th possible value, and to its parents their $j$-possible state. This formula is associated with a particular BN structure, which will be fixed by context.
+%\item Let $\bncount{\Cvar_{ijk}}{\dstructure}$ be the number of groundings that satisfy family formula $\familyf{i}{ijk}$ in sample $\dstructure$.
+\item Let $\Ffreq{ijk}{\dstructure} \equiv \dprob{\dstructure}{\familyf{i}{ijk}} $ be the class-level frequency of the family assignment $\familyf{i}{ijk}$ in sample $\dstructure$.
+\end{enumerate}
+
+\begin{proposition} \label{prop:closed-form}
+Assume the Bayes net instantiation principle~\ref{eq:halpern-bn}.
+Then
+$$
+\dlog{\BN}{\dstructure}
+=
+\sum_{ijk} \ln \parameter_{ijk} \cdot \Ffreq{ijk}{\dstructure}$$ where the summation on the right ranges over all nodes, node values, and parent states.
+\end{proposition}
+
+We refer to $\dlog{\BN}{\cdot}$ as the \defterm{random selection pseudo log-likelihood function}, and to its exponent $\exp \dlog{\BN}{\cdot}$ as the \defterm{random selection pseudo likelihood function}. 
+
+The closed form of the random selection pseud log-likelihood is almost identical to the log-likelihood function for i.i.d. data, except that the latter replaces frequencies by counts. This implies that as with i.i.d. data, the random selection pseudo log-likelihood is maximized by using the observed empirical frequencies as parameter estimates. 
+
+\begin{proposition} \label{prop:maximize}
+The parameter values that maximize the random selection pseudo log-likelhood are the empirical conditional frequencies observed in a database:
+
+\[\estcprob{\dstructure} = 
+\frac
+{\Ffreq{ijk}{\dstructure}}
+{\sum_{k'}\Ffreq{ijk'}{\dstructure}}
+.\]
+\end{proposition}
+
+\section{From Class-Level Probabilities to Instance-Level Probabilities}
+
+
+
+This section considers applying class-level frequencies to inference about ground random variables where the same class-level random variables may be instantiated several times. We examine the classification version of this problem: Given a single ground term, called the query random variable, and values assigned to {\em all} other ground terms, what is the probability distribution over values of the query RV? 
+%We extend our notation as follows to define this question formally. 
+
+For a ground random variable $\FG{\Xvariable}$, and a database defined by a complete set of literals $\FG{\structure}$, we write $\dminus{\structure}{\FG{\Xvariable}}$ for the set of ground literals that specify the values of all ground literals except for $\FG{\Xvariable}$. The problem is then to define a conditional distribution $$\Gprob{\FG{\Yvariable} =\yvalue}{\dminus{\structure}{\FG{\Yvariable}}}.$$ Any conditional probability is always proportional to the joint probability: $$\Gprob{\Yvariable = \yvalue}{\set{\Xvariable} = \set{\xvalue}} = \FG{P}(\yvalue,\set{\xvalue})/Z(\set{\xvalue})$$ where the normalization constant depends on $\set{\xvalue}$ but not $\yvalue$. A natural approach is therefore to define the query probability as proportional to the pseudo log-likelihood:
+
+\begin{equation} \label{eq:log-linear1}
+\Gprob{\FG{\Yvariable} = \yvalue}{\dminus{\structure}{\FG{\Yvariable}}} \propto \exp  
+\dlog
+{\BN}
+{\FG{\Yvariable} = \yvalue,\dminus{\structure}{\FG{\Yvariable}}}
+= 
+\exp \sum_{ijk} \ln \parameter_{ijk} \cdot 
+\Ffreq
+{ijk}
+{\FG{\Yvariable} = \yvalue,\dminus{\structure}{\FG{\Yvariable}}
+}
+ .
+\end{equation}
+
+
+The problem with this approach is that often many of the $\parameter_{ijk}$  terms involve $\familyf{i}{ijk}$ conditions that are irrelevant for the target variable. For example, if we want to predict the box office receipts of a movie based on ratings and the age of the rater, the ages of users who did {\em not} rate the movie may well be irrelevant. Equation~\ref{eq:log-linear1} can be restricted to features that are relevant to the target variable as follows.
+
+\begin{definition}
+A family configuration is \defterm{relevant} if the prior probability of the child node value differs from its conditional probability given the parent node values. In symbols, the configuration $\xvalue_{ijk}$ is relevant if $\parameter_{ijk} \neq \parameter_{ik}$.
+
+
+\end{definition}
+
+Now we can define the log-linear equation.
+
+\begin{equation} \label{eq:log-linear2}
+\Gprob
+{\ground
+	{\Yvariable}
+	{\replace{\set{\Avariable}}{\set{\aconstant}}}
+= \yvalue}
+{\dminus
+{\structure}
+{\ground
+	{\Yvariable}
+	{\replace{\set{\Avariable}}{\set{\aconstant}}}
+} 
+}
+\propto \exp
+\sum_{ijk} \ln \parameter_{ijk} \cdot \dprob{\structure}{\familyf{i}{ijk}|\parameter_{ijk} \neq \parameter_{ik},\set{\Avariable}=\set{\aconstant}}
+\end{equation}
+
+The relevant conditional family frequency 
+%$\dprob{\structure}{\familyf{i}{ijk}|\parameter_{ijk} \neq \parameter_{ik},\set{\Avariable}=\set{\aconstant}}$ 
+may be computed as follows.
+%\begin{equation}
+%\dprob{\structure}{\familyf{i}{ijk}|\relevant{i},\set{\Avariable}=\set{\aconstant}}  =  \begin{cases}
+%0  & \mbox{if } \xvalue_{ijk} \not\in \relevant{i}\\
+%\frac
+%{\Count
+%{\familyf{i}{ijk}
+%}
+%{\structure,\set{\Avariable} = \set{\aconstant}}}
+%{\sum_{\xvalue_{ij'k'}\in\relevant{i}} \Count{\familyf{i}{ij'k'}}{\structure,\set{\Avariable} = \set{\aconstant}}} & \mbox{if } \xvalue_{ijk} \in \relevant{i}
+%\end{cases} 
+%\end{equation}
+
+\begin{equation}
+\dprob{\structure}{\familyf{i}{ijk}|\relevant{i},\set{\Avariable}=\set{\aconstant}}  =  
+\begin{cases}
+0  & \mbox{if } \parameter_{ijk} = \parameter_{ik} \\
+%\xvalue_{ijk} \not\in \relevant{i}\\
+\frac
+{\Count
+{\familyf{i}{ijk}|\set{\Avariable} = \set{\aconstant}}
+{\structure}}
+{\sum_{\xvalue_{ij'k'}:\parameter_{ijk} \neq \parameter_{ik}} \Count{\familyf{i}{ij'k'}|\set{\Avariable} = \set{\aconstant}}{\structure}} & \mbox{if } \parameter_{ijk} \neq \parameter_{ik}
+\end{cases} 
+\end{equation}
+
+
+
+
+\section{Parameter and Structure Learning Algorithms}
+
+\begin{definition}
+The Inverse Fast M\"obius Transform
+\begin{description}
+\item[Input] A set of first-order random variables; a database.
+\item[Output] A contingency table that lists, for each join assignment of values to the first-order random variables, the number of groundings that match the assignment in the database.
+\end{description}
+\end{definition}
+We first compute 
+the M\"obius parameters of the joint distribution. These involve positive relationships only. The IFMT transforms these into joint probabilities {\em without} further data access. 
+
+\begin{definition}
+The Learn-and-Join Structure Learning Algorithm
+\begin{description}
+\item[Input] A set of first-order random variables; a database.
+\item[Output] A first-order Bayesian network whose nodes are the given set of first-order random variables.
+\end{description}
+\end{definition}
+The algorithm performs a hierarchical search in the lattice of relationship chains. It learns a Bayesian multi-net, one Bayesian network for each point in the lattice. Edges learned on smaller relationship chains are propagated to larger relationship chains.
+
+
+
+%
+%\section{Questions}
+%
+%
+%
+%in the notation
+%$\dvalues
+%{\set{\xvalue}}
+%{\replace{\set{\Avariable}}{\set{\aconstant}}}
+%{\structure}$, should we make the grounding the superscript or the subscript? Since this is a vector of values, not a ground object. DaCampos uses superscript for row indices. Need to check the machine learning literature.
+
+\bibliographystyle{abbrv}
+\bibliography{master.bib}
+
+\end{document}
